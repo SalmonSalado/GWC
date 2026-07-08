@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GWC Rutgers–Newark · Effects Demo</title>
+
+<!--
+  ============================================================
+  CUBERTO-STYLE EFFECTS DEMO — Girls Who Code, Rutgers–Newark
+  ============================================================
+  One file, zero dependencies. Every effect is vanilla JS + CSS
+  so you can read exactly how it works. Comments marked [GSAP]
+  tell you what to swap in once you adopt GSAP for the real site.
+
+  Effects included:
+    1. Custom trailing cursor (grows over links, shows a label)
+    2. Staggered "cinematic" text reveal on page load
+    3. Magnetic buttons
+    4. "Get to know us" cards with hover-reveal (video stand-in)
+    5. Hackathon countdown
+    6. Infinite marquee strip
+
+  Open DevTools (F12) and play with the numbers — the lerp
+  factor, the stagger delay, the magnet strength. That's how
+  you develop taste for motion.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- The custom cursor lives at the end of the visual stack -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"><span></span></div>
+
+  <!-- 2. HERO with staggered reveal -->
+  <section class="hero">
+    <p class="eyebrow">Girls Who Code · Rutgers–Newark</p>
+    <div class="reveal-mask"><h1 class="line">We build,</h1></div>
+    <div class="reveal-mask"><h1 class="line"><span class="voice">we break,</span></h1></div>
+    <div class="reveal-mask"><h1 class="line">we code.</h1></div>
+    <p class="sub">Workshops, hackathons, and a community of women writing the future of tech — right here in Newark.</p>
+  </section>
+
+  <!-- 1. Cursor hover targets + 3. magnetic buttons -->
+  <section>
+    <p class="eyebrow">Hover these — watch the cursor</p>
+    <div style="display:flex; gap:3rem; flex-wrap:wrap; font-size:1.5rem; font-weight:500; margin-bottom:3rem;">
+      <a href="#" data-cursor="Read" style="color:inherit; text-decoration:none; border-bottom:2px solid var(--ink);">The blog</a>
+      <a href="#" data-cursor="View" style="color:inherit; text-decoration:none; border-bottom:2px solid var(--ink);">Events</a>
+      <a href="#" data-cursor="Meet" style="color:inherit; text-decoration:none; border-bottom:2px solid var(--ink);">The eboard</a>
+    </div>
+
+    <div class="magnet-wrap"><button class="magnet">Join the chapter</button></div>
+    <div class="magnet-wrap"><button class="magnet">Register for HackRU</button></div>
+  </section>
+
+  <!-- 6. Marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="track" id="marquee-track">
+      <span>Workshops <i class="dot">●</i></span>
+      <span>Hack nights <i class="dot">●</i></span>
+      <span>Mentorship <i class="dot">●</i></span>
+      <span>Sisterhood <i class="dot">●</i></span>
+      <span>Create Academy <i class="dot">●</i></span>
+    </div>
+  </div>
+
+  <!-- 5. Countdown -->
+  <section>
+    <p class="eyebrow">Next hackathon</p>
+    <div class="countdown" id="countdown">
+      <div class="unit"><b id="cd-d">00</b><span>days</span></div>
+      <div class="unit"><b id="cd-h">00</b><span>hours</span></div>
+      <div class="unit"><b id="cd-m">00</b><span>minutes</span></div>
+      <div class="unit"><b id="cd-s">00</b><span>seconds</span></div>
+    </div>
+  </section>
+
+  <!-- 4. Eboard cards -->
+  <section>
+    <p class="eyebrow">Get to know us</p>
+    <div class="cards">
+      <div class="card" data-cursor="Hi!">
+        <div class="cover"><p class="fact">Once debugged for 6 hours. It was a missing semicolon.</p></div>
+        <h3>Your Name</h3><small>President</small>
+      </div>
+      <div class="card" data-cursor="Hey!">
+        <div class="cover"><p class="fact">Learned Python from YouTube at 2am. No regrets.</p></div>
+        <h3>Eboard Member</h3><small>Vice President</small>
+      </div>
+      <div class="card" data-cursor="Yo!">
+        <div class="cover"><p class="fact">Will fight anyone who says CSS isn't real programming.</p></div>
+        <h3>Eboard Member</h3><small>Events Chair</small>
+      </div>
+    </div>
+  </section>
+
+<script src="script.js"></script>
+</body>
+</html>

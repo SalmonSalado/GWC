@@ -1,0 +1,238 @@
+/* ---------- Design tokens: one place to change the whole look ---------- */
+  :root {
+    --ink:    #14213d;   /* deep navy — text and cursor */
+    --paper:  #f6f5f1;   /* soft off-white canvas */
+    --teal:   #0f8b7a;   /* primary accent */
+    --coral:  #ff5d47;   /* energy accent — use sparingly */
+    --display: 'Space Grotesk', sans-serif;
+    --voice:   'Instrument Serif', serif;  /* the italic "movie" word */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--display);
+    /* We hide the native cursor and draw our own.
+       Never do this without a working replacement! */
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  a, button { cursor: none; }
+
+  section { padding: 12vh 8vw; }
+
+  .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 2rem;
+  }
+
+  /* ================================================================
+     1. CUSTOM CURSOR
+     Two elements: a small dot glued to the mouse, and a larger ring
+     that lags behind it (the lag is what feels expensive).
+     [GSAP] Cuberto open-sourced this exact idea as "mouse-follower":
+     https://github.com/Cuberto/mouse-follower
+     ================================================================ */
+  #cursor-dot, #cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    border-radius: 50%;
+    pointer-events: none;      /* never block clicks */
+    z-index: 9999;
+  }
+  #cursor-dot {
+    width: 8px; height: 8px;
+    background: var(--ink);
+  }
+  #cursor-ring {
+    width: 44px; height: 44px;
+    background: var(--ink);
+    opacity: 0.12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.25s;
+  }
+  /* When hovering something interactive, the ring becomes a solid
+     labelled badge — the classic Cuberto "View" moment. */
+  #cursor-ring.is-active {
+    opacity: 1;
+    background: var(--teal);
+  }
+  #cursor-ring span {
+    font-size: 11px;
+    font-weight: 500;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  #cursor-ring.is-active span { opacity: 1; }
+
+  /* ================================================================
+     2. STAGGERED TEXT REVEAL
+     Each line sits inside an overflow:hidden wrapper and starts
+     translated 110% down (invisible). We slide lines up one at a
+     time. The easing curve does 90% of the "cinematic" feel.
+     [GSAP] gsap.from('.line', {yPercent: 110, stagger: 0.12,
+            ease: 'power4.out', duration: 1})
+     ================================================================ */
+  .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+
+  .reveal-mask { overflow: hidden; }
+  .line {
+    font-size: clamp(2.6rem, 8vw, 6.5rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    transform: translateY(110%);
+    transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1); /* "power4.out"-ish */
+  }
+  .line .voice {
+    font-family: var(--voice);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--coral);
+  }
+  body.is-loaded .line { transform: translateY(0); }
+  /* The stagger: each successive line waits a beat longer */
+  .reveal-mask:nth-child(2) .line { transition-delay: 0.12s; }
+  .reveal-mask:nth-child(3) .line { transition-delay: 0.24s; }
+
+  .hero p.sub {
+    margin-top: 2.5rem;
+    max-width: 34ch;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0;
+    transition: opacity 1s ease 0.7s;
+  }
+  body.is-loaded .hero p.sub { opacity: 0.75; }
+
+  /* ================================================================
+     3. MAGNETIC BUTTON
+     The button translates a fraction of the cursor's offset from
+     its center while you're near it, then springs back on leave.
+     The "spring" is just an overshooting cubic-bezier.
+     [GSAP] gsap.to(btn, {x: dx*0.35, y: dy*0.35, ease: 'power3.out'})
+            and on leave: ease: 'elastic.out(1, 0.4)'
+     ================================================================ */
+  .magnet-wrap { display: inline-block; padding: 2.2rem; } /* the "gravity field" */
+  .magnet {
+    display: inline-block;
+    padding: 1.1rem 2.4rem;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--display);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink);
+    transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.35),
+                background 0.3s, color 0.3s;
+  }
+  .magnet:hover { background: var(--ink); color: var(--paper); }
+
+  /* ================================================================
+     4. "GET TO KNOW US" HOVER CARDS
+     On the real site each card's ::cover would be a muted looping
+     <video>. Here a CSS animation stands in so the file needs no
+     assets — swap the .cover div for a <video muted loop> later.
+     ================================================================ */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+  }
+  .card { position: relative; }
+  .card .cover {
+    aspect-ratio: 4 / 5;
+    border-radius: 16px;
+    background: var(--ink);
+    overflow: hidden;
+    position: relative;
+  }
+  /* the fake "video": stripes that only animate on hover */
+  .card .cover::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: repeating-linear-gradient(
+      45deg, var(--teal) 0 28px, var(--ink) 28px 56px);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .card:hover .cover::before {
+    opacity: 0.9;
+    animation: drift 6s linear infinite;
+  }
+  @keyframes drift { to { transform: translate(56px, 56px); } }
+
+  .card .fact {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 1.2rem;
+    color: #fff;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    transform: translateY(12px);
+    opacity: 0;
+    transition: transform 0.4s, opacity 0.4s;
+  }
+  .card:hover .fact { transform: translateY(0); opacity: 1; }
+
+  .card h3 { margin-top: 1rem; font-size: 1.2rem; }
+  .card small { color: var(--teal); font-weight: 500; }
+
+  /* ================================================================
+     5. HACKATHON COUNTDOWN — plain JS, updated once per second
+     ================================================================ */
+  .countdown { display: flex; gap: 3rem; flex-wrap: wrap; }
+  .countdown .unit b {
+    display: block;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums; /* stops digits jittering */
+  }
+  .countdown .unit span {
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  /* ================================================================
+     6. MARQUEE — two copies of the strip, translated -50% on loop
+     ================================================================ */
+  .marquee {
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 1.2rem 0;
+  }
+  .marquee .track {
+    display: inline-block;
+    animation: scroll 18s linear infinite;
+  }
+  .marquee span {
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-right: 3rem;
+  }
+  .marquee .dot { color: var(--coral); }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+
+  /* ---------- Accessibility: honor reduced-motion preferences ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .line { transform: none; }
+    .hero p.sub { opacity: 0.75; }
+    body, a, button { cursor: auto; }
+    #cursor-dot, #cursor-ring { display: none; }
+  }
