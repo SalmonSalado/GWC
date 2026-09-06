@@ -1,0 +1,316 @@
+/* ---------- Design tokens: one place to change the whole look ---------- */
+:root {
+  --ink:    #14213d;   /* deep navy — text and cursor */
+  --paper:  #f6f5f1;   /* soft off-white canvas */
+  --teal:   #0f8b7a;   /* primary accent */
+  --coral:  #ff5d47;   /* energy accent — use sparingly */
+  --display: 'Space Grotesk', sans-serif;
+  --voice:   'Instrument Serif', serif;  /* the italic "movie" word */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--display);
+  /* We hide the native cursor and draw our own.
+     Never do this without a working replacement! */
+  cursor: none;
+  overflow-x: hidden;
+}
+
+a, button { cursor: none; }
+
+section { padding: 12vh 8vw; }
+
+.eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 2rem;
+}
+
+/* ================================================================
+   TOP BAR — login button in the upper-right corner
+   ================================================================ */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1.4rem 2rem;
+  z-index: 1000;
+}
+.login-link {
+  font-family: var(--display);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-decoration: none;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.5rem 1.3rem;
+  background: transparent;
+  transition: background 0.3s, color 0.3s;
+}
+.login-link:hover { background: var(--ink); color: var(--paper); }
+
+/* ================================================================
+   1. CUSTOM CURSOR
+   ================================================================ */
+#cursor-dot, #cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  border-radius: 50%;
+  pointer-events: none;      /* never block clicks */
+  z-index: 9999;
+}
+#cursor-dot {
+  width: 8px; height: 8px;
+  background: var(--ink);
+}
+#cursor-ring {
+  width: 44px; height: 44px;
+  background: var(--ink);
+  opacity: 0.12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.25s;
+}
+#cursor-ring.is-active {
+  opacity: 1;
+  background: var(--teal);
+}
+#cursor-ring span {
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+#cursor-ring.is-active span { opacity: 1; }
+
+/* ================================================================
+   2. STAGGERED TEXT REVEAL
+   ================================================================ */
+.hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
+
+.reveal-mask { overflow: hidden; }
+.line {
+  font-size: clamp(2.6rem, 8vw, 6.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  transform: translateY(110%);
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1); /* "power4.out"-ish */
+}
+.line .voice {
+  font-family: var(--voice);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--coral);
+}
+body.is-loaded .line { transform: translateY(0); }
+.reveal-mask:nth-child(2) .line { transition-delay: 0.12s; }
+.reveal-mask:nth-child(3) .line { transition-delay: 0.24s; }
+
+.hero p.sub {
+  margin-top: 2.5rem;
+  max-width: 34ch;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  opacity: 0;
+  transition: opacity 1s ease 0.7s;
+}
+body.is-loaded .hero p.sub { opacity: 0.75; }
+
+/* ================================================================
+   3. MAGNETIC BUTTON
+   ================================================================ */
+.magnet-wrap { display: inline-block; padding: 2.2rem; } /* the "gravity field" */
+.magnet {
+  display: inline-block;
+  padding: 1.1rem 2.4rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.35),
+              background 0.3s, color 0.3s;
+}
+.magnet:hover { background: var(--ink); color: var(--paper); }
+
+/* ================================================================
+   4. "GET TO KNOW US" HOVER CARDS
+   ================================================================ */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+.card { position: relative; }
+.card .cover {
+  aspect-ratio: 4 / 5;
+  border-radius: 16px;
+  background: var(--ink);
+  overflow: hidden;
+  position: relative;
+}
+.card .cover::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: repeating-linear-gradient(
+    45deg, var(--teal) 0 28px, var(--ink) 28px 56px);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.card:hover .cover::before {
+  opacity: 0.9;
+  animation: drift 6s linear infinite;
+}
+@keyframes drift { to { transform: translate(56px, 56px); } }
+
+.card .fact {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.2rem;
+  color: #fff;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  transform: translateY(12px);
+  opacity: 0;
+  transition: transform 0.4s, opacity 0.4s;
+}
+.card:hover .fact { transform: translateY(0); opacity: 1; }
+
+.card h3 { margin-top: 1rem; font-size: 1.2rem; }
+.card small { color: var(--teal); font-weight: 500; }
+
+/* ================================================================
+   5. HACKATHON COUNTDOWN
+   ================================================================ */
+.countdown { display: flex; gap: 3rem; flex-wrap: wrap; }
+.countdown .unit b {
+  display: block;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.countdown .unit span {
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ================================================================
+   6. MARQUEE
+   ================================================================ */
+.marquee {
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 1.2rem 0;
+}
+.marquee .track {
+  display: inline-block;
+  animation: scroll 18s linear infinite;
+}
+.marquee span {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-right: 3rem;
+}
+.marquee .dot { color: var(--coral); }
+@keyframes scroll { to { transform: translateX(-50%); } }
+
+/* ================================================================
+   ADMIN PANEL styling
+   ================================================================ */
+.admin-wrap {
+  max-width: 460px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8vh 2rem;
+}
+.admin-wrap h1 { font-size: 2rem; margin-bottom: 1.5rem; }
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+.field input, .field textarea {
+  font-family: var(--display);
+  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.btn-solid {
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.9rem 1.4rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  transition: opacity 0.2s;
+}
+.btn-solid:disabled { opacity: 0.5; }
+.btn-ghost {
+  font-family: var(--display);
+  font-size: 0.9rem;
+  padding: 0.6rem 1.2rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+}
+.err { color: var(--coral); margin-top: 0.8rem; font-weight: 500; }
+.admin-list { margin-top: 2rem; }
+.admin-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(20,33,61,0.15);
+}
+.admin-row .del {
+  font-size: 0.8rem;
+  color: var(--coral);
+  background: none;
+  border: none;
+  font-family: var(--display);
+}
+.back-link {
+  display: inline-block;
+  margin-top: 2rem;
+  color: var(--teal);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* ---------- Accessibility: honor reduced-motion preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  .line { transform: none; }
+  .hero p.sub { opacity: 0.75; }
+  body, a, button { cursor: auto; }
+  #cursor-dot, #cursor-ring { display: none; }
+}
