@@ -1,0 +1,87 @@
+.window {
+  position: absolute;
+  /* Default spot: centered, nudged right like the mockup, then cascaded */
+  left: var(--x, calc(50% - var(--w) / 2 + 8% + var(--cascade)));
+  top: var(--y, calc(46% - var(--h) / 2 + var(--cascade)));
+  width: var(--w);
+  height: var(--h);
+  display: flex;
+  flex-direction: column;
+  background: var(--chrome);
+  border: 2px solid var(--os-ink);
+  border-radius: 4px;
+  box-shadow: 5px 6px 0 rgba(0, 0, 0, 0.32);
+  outline: none;
+  animation: open 180ms cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+.window[hidden] { display: none; }
+
+@keyframes open {
+  from { transform: scale(0.94); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 8px 0 10px;
+  flex-shrink: 0;
+  background: linear-gradient(#e7e7e7, #cfcfcf);
+  border-bottom: 2px solid var(--os-ink);
+  user-select: none;
+  touch-action: none;
+}
+.titlebar[data-draggable] { cursor: grab; }
+.titlebar[data-draggable]:active { cursor: grabbing; }
+.window:not([data-active]) .titlebar { background: #d9d9d9; color: #666; }
+
+.titleIcon { display: flex; flex-shrink: 0; }
+.title {
+  flex: 1;
+  min-width: 0;
+  font: 700 15px/1 var(--os-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.minimize, .close {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--os-ink);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.minimize { background: var(--btn-min); }
+.close { background: var(--btn-close); }
+.minimize:hover, .close:hover { filter: brightness(1.1); }
+
+.body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Phones: every window is a full-screen sheet above the taskbar */
+@media (max-width: 700px) {
+  .window {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: calc(100% - var(--taskbar-h));
+    border-width: 0 0 2px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .titlebar { height: 44px; }
+  .minimize, .close { width: 24px; height: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .window { animation: none; }
+}

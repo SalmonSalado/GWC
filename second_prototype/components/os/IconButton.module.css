@@ -1,0 +1,44 @@
+.icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 108px;
+  padding: 6px 4px;
+  background: none;
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+  color: inherit;
+}
+.icon:focus-visible { outline: 2px dotted currentColor; outline-offset: 1px; }
+
+.art { display: flex; filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.25)); }
+
+.label {
+  padding: 1px 4px;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+
+/* On the wallpaper: small mono labels with a dark outline for legibility */
+.icon[data-variant='desktop'] .label {
+  font: 700 12px/1.3 var(--os-mono);
+  color: #fff;
+  text-shadow: 1px 0 0 #1b2230, -1px 0 0 #1b2230, 0 1px 0 #1b2230, 0 -1px 0 #1b2230;
+}
+.icon[data-variant='desktop'][data-selected] .label {
+  background: var(--select);
+  text-shadow: none;
+}
+
+/* Inside the file explorer: rounded pixel labels, like the mockup */
+.icon[data-variant='explorer'] .label {
+  font: 500 15px/1.2 var(--os-pixel);
+  color: var(--os-ink);
+}
+.icon[data-variant='explorer'][data-selected] .label {
+  background: var(--select);
+  color: #fff;
+}
