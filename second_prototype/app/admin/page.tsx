@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
-import { supabase } from '../../lib/supabase'
+import { authLink, supabase } from '../../lib/supabase'
 import type { EboardMember } from '../../lib/eboard'
 
 export default function Admin() {
@@ -13,8 +13,17 @@ export default function Admin() {
   // login form state
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [loginError, setLoginError] = useState('')
+  const [loginError, setLoginError] = useState(
+    authLink.error ? 'This link has expired or was already used. Ask a board admin to send a new invite.' : ''
+  )
   const [loggingIn, setLoggingIn] = useState(false)
+
+  // set-password form state (people arriving from an invite or reset email)
+  const [needsPassword, setNeedsPassword] = useState(authLink.setPassword)
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [savingPassword, setSavingPassword] = useState(false)
 
   // eboard form state
   const [eboard, setEboard] = useState<EboardMember[]>([])
@@ -33,10 +42,10 @@ export default function Admin() {
     checkUser()
   }, [])
 
-  // Load eboard whenever we become logged in
+  // Load eboard once we're logged in with a password set
   useEffect(() => {
-    if (user) loadEboard()
-  }, [user])
+    if (user && !needsPassword) loadEboard()
+  }, [user, needsPassword])
 
   async function loadEboard() {
     const { data, error } = await supabase
@@ -59,6 +68,29 @@ export default function Admin() {
       setPassword('')
     }
     setLoggingIn(false)
+  }
+
+  async function handleSetPassword(e: React.FormEvent) {
+    e.preventDefault()
+    setPasswordError('')
+    if (newPassword.length < 8) {
+      setPasswordError('Use at least 8 characters.')
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordError('The passwords don’t match.')
+      return
+    }
+    setSavingPassword(true)
+    const { error } = await supabase.auth.updateUser({ password: newPassword })
+    if (error) {
+      setPasswordError(error.message)
+    } else {
+      setNeedsPassword(false)
+      setNewPassword('')
+      setConfirmPassword('')
+    }
+    setSavingPassword(false)
   }
 
   async function handleLogout() {
@@ -115,6 +147,38 @@ export default function Admin() {
         </div>
         {loginError && <p className="err">{loginError}</p>}
         <Link href="/" className="back-link">← Back to site</Link>
+      </main>
+    )
+  }
+
+  // ARRIVED FROM INVITE — choose a password before anything else
+  if (needsPassword) {
+    return (
+      <main className="admin-wrap">
+        <h1>Create your password</h1>
+        <p style={{ marginBottom: '1.5rem' }}>
+          Welcome, <strong>{user.email}</strong>. Choose a password you&apos;ll use to sign in to the admin panel.
+        </p>
+        <form className="field" onSubmit={handleSetPassword}>
+          <input
+            type="password"
+            placeholder="New password (at least 8 characters)"
+            autoComplete="new-password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Confirm password"
+            autoComplete="new-password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <button type="submit" className="btn-solid" disabled={savingPassword}>
+            {savingPassword ? 'Saving…' : 'Save password'}
+          </button>
+        </form>
+        {passwordError && <p className="err">{passwordError}</p>}
       </main>
     )
   }
