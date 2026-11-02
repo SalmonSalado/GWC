@@ -8,19 +8,10 @@ export const chapter = {
   location: 'Newark, NJ',
   tagline:
     'A community inclusive to all, we welcome you right here in the center of Newark.',
-  activities: ['Workshops', 'Hack nights', 'Mentorship', 'Sisterhood', 'Create Academy'],
-  // e.g. 'Thursdays at 6pm, Engelhard Hall 110'. Leave empty to show "coming soon".
-  meetingInfo: '',
+  activities: ['Workshops', 'Mentorship', 'Sisterhood'],
   // Links. Empty strings render as disabled buttons instead of dead links.
-  joinUrl: '',
   instagramUrl: '',
   hqUrl: 'https://girlswhocode.com',
-}
-
-export const hackathon = {
-  name: 'HackRU',
-  startsAt: '2026-10-17T09:00:00-04:00', // ← change me
-  registerUrl: '',
 }
 
 export type GalleryPhoto = { src: string; alt: string }

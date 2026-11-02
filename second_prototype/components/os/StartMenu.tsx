@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import styles from './Taskbar.module.css'
 import {
-  CameraIcon, CountdownIcon, FolderIcon, JoinIcon, LockIcon, PersonIcon, TextFileIcon,
+  CameraIcon, FolderIcon, JoinIcon, LockIcon, PersonIcon, TextFileIcon,
 } from './icons'
 import type { Route } from './routes'
 
@@ -17,7 +17,6 @@ type Props = {
 // The Start menu is the site's real navigation: every section is one click away.
 const ITEMS: { label: string; route: Route; icon: React.ReactNode }[] = [
   { label: 'About us', route: { app: 'about' }, icon: <TextFileIcon size={22} /> },
-  { label: 'Next hackathon', route: { app: 'hackathon' }, icon: <CountdownIcon size={22} /> },
   { label: 'Meet the board', route: { app: 'explorer', folder: 'people' }, icon: <PersonIcon size={22} /> },
   { label: 'Join us', route: { app: 'join' }, icon: <JoinIcon size={22} /> },
   { label: 'Camera roll', route: { app: 'camera' }, icon: <CameraIcon size={22} /> },

@@ -60,27 +60,7 @@
   border-left: 1px solid #9a9a9a;
   flex-shrink: 0;
 }
-.trayButton {
-  position: relative;
-  display: flex;
-  background: none;
-  border: 0;
-  padding: 2px;
-  cursor: pointer;
-}
 .trayIcon { display: flex; }
-.badge {
-  position: absolute;
-  top: -4px;
-  right: -5px;
-  min-width: 13px;
-  height: 13px;
-  font: 700 9px/13px var(--os-mono);
-  text-align: center;
-  color: #fff;
-  background: #e0453a;
-  border-radius: 50%;
-}
 .clock { font: 700 14px/1 var(--os-mono); min-width: 5ch; text-align: right; }
 
 /* Start menu */
@@ -129,33 +109,6 @@
 .startDivider { border: 0; border-top: 1px solid #a8a8a8; margin: 4px 6px; }
 .lockSwatch { display: flex; padding: 2px; background: #44505e; border-radius: 2px; }
 
-/* Notification balloon */
-.balloon {
-  position: absolute;
-  right: 10px;
-  bottom: calc(var(--taskbar-h) + 10px);
-  width: 250px;
-  padding: 12px 14px;
-  font: 13px/1.45 var(--os-mono);
-  background: #fffbe3;
-  border: 2px solid var(--os-ink);
-  border-radius: 6px;
-  box-shadow: 4px 5px 0 rgba(0, 0, 0, 0.3);
-  z-index: 10001;
-  animation: rise 160ms ease-out;
-}
-.balloonTitle { font: 500 16px/1.2 var(--os-pixel); margin-bottom: 4px; }
-.balloonActions { display: flex; gap: 8px; margin-top: 10px; }
-.balloonButton, .balloonDismiss {
-  padding: 5px 10px;
-  font: 700 12px var(--os-mono);
-  border: 2px solid var(--os-ink);
-  border-radius: 3px;
-  cursor: pointer;
-}
-.balloonButton { background: var(--pink); }
-.balloonDismiss { background: #e2e2e2; }
-
 @keyframes rise {
   from { transform: translateY(6px); opacity: 0; }
   to { transform: none; opacity: 1; }
@@ -168,5 +121,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .startMenu, .balloon { animation: none; }
+  .startMenu { animation: none; }
 }

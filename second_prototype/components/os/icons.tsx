@@ -67,18 +67,6 @@ export function TextFileIcon(props: IconProps) {
   )
 }
 
-export function CountdownIcon(props: IconProps) {
-  return (
-    <Svg {...props}>
-      <path d="M3 5h26v22H3z" fill="#e9e9e4" stroke="#2b2b2b" />
-      <path d="M3 5h26v4H3z" fill="#1aa5a0" stroke="#2b2b2b" />
-      <path d="M24 6h2v2h-2z" fill="#f08bab" />
-      <path d="M11 12h10v1h2v10h-2v1H11v-1H9V13h2z" fill="#fff" stroke="#2b2b2b" />
-      <path d="M15 14h2v5h3v2h-5z" fill="#2b2b2b" />
-    </Svg>
-  )
-}
-
 export function JoinIcon(props: IconProps) {
   return (
     <Svg {...props}>
@@ -128,15 +116,6 @@ export function LockIcon(props: IconProps) {
       <path d="M11 6h10v2h2v6h-3V9h-8v5H9V8h2z" fill="#f4f4f0" />
       <path d="M7 14h18v13H7z" fill="#f4f4f0" />
       <path d="M15 18h2v5h-2z" fill="#44505e" />
-    </Svg>
-  )
-}
-
-export function ChatIcon(props: IconProps) {
-  return (
-    <Svg {...props}>
-      <path d="M3 6h22v14H12l-5 5v-5H3z" fill="#f4d35e" stroke="#2b2b2b" />
-      <path d="M7 10h14v2H7zM7 14h9v2H7z" fill="#2b2b2b" />
     </Svg>
   )
 }

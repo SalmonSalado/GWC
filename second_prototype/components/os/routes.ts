@@ -5,7 +5,6 @@
 export type AppId =
   | 'explorer'
   | 'about'
-  | 'hackathon'
   | 'join'
   | 'computer'
   | 'recycle'
@@ -20,7 +19,6 @@ export const ROUTES = {
   gwc: { app: 'explorer', folder: 'gwc' },
   people: { app: 'explorer', folder: 'people' },
   about: { app: 'about' },
-  hackathon: { app: 'hackathon' },
   join: { app: 'join' },
   computer: { app: 'computer' },
   'recycle-bin': { app: 'recycle' },
@@ -55,7 +53,6 @@ export const FOLDER_NAMES: Record<FolderId, string> = {
 
 export const APP_TITLES: Record<Exclude<AppId, 'explorer'>, string> = {
   about: 'about_us.txt',
-  hackathon: 'next_hackathon.exe',
   join: 'join_us',
   computer: 'my_computer',
   recycle: 'recycle_bin',
@@ -73,7 +70,6 @@ export const PAGE_TITLES: Record<Slug, string> = {
   gwc: 'About the chapter',
   people: 'Meet the board',
   about: 'About us',
-  hackathon: 'Next hackathon',
   join: 'Join us',
   computer: 'Chapter info',
   'recycle-bin': 'Recycle bin',

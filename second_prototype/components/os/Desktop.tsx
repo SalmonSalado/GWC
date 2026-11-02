@@ -6,13 +6,12 @@ import IconButton from './IconButton'
 import Taskbar from './Taskbar'
 import Window from './Window'
 import {
-  CameraIcon, ComputerIcon, CountdownIcon, FolderIcon, JoinIcon, RecycleIcon, TextFileIcon,
+  CameraIcon, ComputerIcon, FolderIcon, JoinIcon, RecycleIcon, TextFileIcon,
 } from './icons'
 import { activeWindow, useWindowManager, type WindowState } from './useWindowManager'
 import { PAGE_TITLES, routeFromPath, slugFor, titleFor, type AppId, type Route } from './routes'
 import Explorer from '../apps/Explorer'
 import AboutApp from '../apps/AboutApp'
-import HackathonApp from '../apps/HackathonApp'
 import JoinApp from '../apps/JoinApp'
 import ComputerApp from '../apps/ComputerApp'
 import RecycleApp from '../apps/RecycleApp'
@@ -24,7 +23,6 @@ import { useMediaQuery } from '@/lib/useMediaQuery'
 const SIZES: Record<AppId, { w: string; h: string }> = {
   explorer: { w: 'min(660px, 90%)', h: 'min(440px, 76%)' },
   about: { w: 'min(520px, 90%)', h: 'min(430px, 78%)' },
-  hackathon: { w: 'min(540px, 90%)', h: 'min(380px, 78%)' },
   join: { w: 'min(460px, 90%)', h: 'min(400px, 78%)' },
   computer: { w: 'min(500px, 90%)', h: 'min(340px, 78%)' },
   recycle: { w: 'min(440px, 90%)', h: 'min(300px, 78%)' },
@@ -35,7 +33,6 @@ function iconFor(app: AppId, size: number) {
   switch (app) {
     case 'explorer': return <FolderIcon size={size} />
     case 'about': return <TextFileIcon size={size} />
-    case 'hackathon': return <CountdownIcon size={size} />
     case 'join': return <JoinIcon size={size} />
     case 'computer': return <ComputerIcon size={size} />
     case 'recycle': return <RecycleIcon size={size} />
@@ -102,7 +99,6 @@ export default function Desktop({ initialRoute, onLock, registerOpener }: Props)
           />
         )
       case 'about': return <AboutApp />
-      case 'hackathon': return <HackathonApp />
       case 'join': return <JoinApp />
       case 'computer': return <ComputerApp />
       case 'recycle': return <RecycleApp />

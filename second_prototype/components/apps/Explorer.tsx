@@ -5,7 +5,7 @@ import Link from 'next/link'
 import styles from './Explorer.module.css'
 import IconButton from '../os/IconButton'
 import {
-  ArrowLeftIcon, CameraIcon, CountdownIcon, FolderIcon, JoinIcon, PersonIcon, TextFileIcon,
+  ArrowLeftIcon, CameraIcon, FolderIcon, JoinIcon, PersonIcon, TextFileIcon,
 } from '../os/icons'
 import { FOLDER_NAMES, type FolderId, type Route } from '../os/routes'
 import { useEboard, type EboardMember } from '@/lib/eboard'
@@ -29,7 +29,7 @@ const STATIC_ITEMS: Record<Exclude<FolderId, 'people'>, Item[]> = {
   documents: [
     {
       key: 'gwc', label: 'gwc', icon: (s) => <FolderIcon size={s} />,
-      description: 'Who we are, the next hackathon, and how to join.',
+      description: 'Who we are and how to join.',
       opens: { app: 'explorer', folder: 'gwc' },
     },
     {
@@ -44,12 +44,8 @@ const STATIC_ITEMS: Record<Exclude<FolderId, 'people'>, Item[]> = {
       description: 'What the chapter is and what we do.', opens: { app: 'about' },
     },
     {
-      key: 'hackathon', label: 'next_hackathon.exe', icon: (s) => <CountdownIcon size={s} />,
-      description: 'Countdown to the next hackathon.', opens: { app: 'hackathon' },
-    },
-    {
       key: 'join', label: 'join_us', icon: (s) => <JoinIcon size={s} />,
-      description: 'Sign up and find our links.', opens: { app: 'join' },
+      description: 'Find our links.', opens: { app: 'join' },
     },
     {
       key: 'camera', label: 'camera_roll', icon: (s) => <CameraIcon size={s} />,

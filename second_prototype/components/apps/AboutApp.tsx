@@ -14,10 +14,6 @@ export default function AboutApp() {
           {chapter.activities.map((a) => <li key={a}>{a}</li>)}
         </ul>
       </section>
-      <section>
-        <h3>When we meet</h3>
-        <p>{chapter.meetingInfo || 'Meeting times coming soon.'}</p>
-      </section>
     </article>
   )
 }

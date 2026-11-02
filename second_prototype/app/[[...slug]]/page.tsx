@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Stage from '@/components/os/Stage'
 import { PAGE_TITLES, SLUGS, isSlug, type Slug } from '@/components/os/routes'
 
-// One page serves "/" and every window URL ("/people", "/hackathon", ...).
+// One page serves "/" and every window URL ("/people", "/about", ...).
 // The server only checks the URL; the desktop itself runs in the browser.
 
 type Props = { params: Promise<{ slug?: string[] }> }
