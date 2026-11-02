@@ -10,7 +10,7 @@ const csp = `
   script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""};
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com;
-  img-src 'self' blob: data:;
+  img-src 'self' blob: data: ${supabaseUrl};
   connect-src 'self' ${supabaseUrl};
   object-src 'none';
   base-uri 'self';

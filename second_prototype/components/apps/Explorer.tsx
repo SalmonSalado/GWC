@@ -8,7 +8,8 @@ import {
 } from '../os/icons'
 import { FOLDER_NAMES, type FolderId, type Route } from '../os/routes'
 import Image from 'next/image'
-import { photoUrl, useEboard, type EboardMember } from '@/lib/eboard'
+import { useEboard, type EboardMember } from '@/lib/eboard'
+import { photoUrl } from '@/lib/eboardPhotos'
 
 type Item = {
   key: string
@@ -80,9 +81,8 @@ function FolderView({ folder, tapToOpen, onNavigate, onOpen }: Props) {
       ? eboard.members.map((m, i) => ({
           key: m.id,
           label: m.name,
-          icon: (s) => m.photo_path
-            ? <Image className={styles.photo} src={photoUrl(m.photo_path)} alt="" width={s} height={s} />
-            : <PersonIcon size={s} variant={i} />,
+          // alt is empty because the name is printed right under the icon
+          icon: (s) => <MemberPhoto member={m} variant={i} size={s} alt="" />,
           description: m.role,
           member: m,
         }))
@@ -118,7 +118,11 @@ function FolderView({ folder, tapToOpen, onNavigate, onOpen }: Props) {
         <aside className={styles.side} aria-live="polite">
           {current ? (
             <>
-              <span className={styles.sideArt}>{current.icon(current.member?.photo_path ? 120 : 72)}</span>
+              <span className={styles.sideArt}>
+                {current.member
+                  ? <MemberPhoto member={current.member} variant={items.indexOf(current)} size={120} placeholderSize={72} alt={current.member.name} />
+                  : current.icon(72)}
+              </span>
               {current.member ? (
                 <>
                   <p className={styles.sideName}>{current.member.name}</p>
@@ -177,4 +181,13 @@ function FolderView({ folder, tapToOpen, onNavigate, onOpen }: Props) {
       </div>
     </div>
   )
+}
+
+// A member's photo, or a cartoon person when they don't have one
+function MemberPhoto({ member, variant, size, placeholderSize = size, alt }: {
+  member: EboardMember; variant: number; size: number; placeholderSize?: number; alt: string
+}) {
+  const url = photoUrl(member.photo_path)
+  if (!url) return <PersonIcon size={placeholderSize} variant={variant} />
+  return <Image className={styles.photo} src={url} alt={alt} width={size} height={size} />
 }

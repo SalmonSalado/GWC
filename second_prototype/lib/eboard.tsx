@@ -14,12 +14,6 @@ export type EboardMember = {
   created_at: string
 }
 
-export const PHOTO_BUCKET = 'eboard-photos'
-
-export function photoUrl(path: string): string {
-  return supabase.storage.from(PHOTO_BUCKET).getPublicUrl(path).data.publicUrl
-}
-
 type EboardState = {
   members: EboardMember[]
   status: 'loading' | 'ready' | 'error'

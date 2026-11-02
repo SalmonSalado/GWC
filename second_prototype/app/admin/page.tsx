@@ -5,10 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { User } from '@supabase/supabase-js'
 import { authLink, supabase } from '../../lib/supabase'
-import { PHOTO_BUCKET, photoUrl, type EboardMember } from '../../lib/eboard'
+import type { EboardMember } from '../../lib/eboard'
+import { deleteMember, photoUrl, replacePhoto, validatePhoto } from '../../lib/eboardPhotos'
 
-const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-const MAX_PHOTO_MB = 5
+const PHOTO_ACCEPT = 'image/jpeg,image/png,image/webp'
+const MAX_BIO = 600
 
 export default function Admin() {
   const [user, setUser] = useState<User | null>(null)
@@ -133,13 +134,9 @@ export default function Admin() {
 
   function choosePhoto(file: File | null) {
     setEboardError('')
-    if (file && !PHOTO_TYPES.includes(file.type)) {
-      setEboardError('Photos must be JPG, PNG, or WebP.')
-      setPhotoInputKey((k) => k + 1)
-      return
-    }
-    if (file && file.size > MAX_PHOTO_MB * 1024 * 1024) {
-      setEboardError(`Photos must be under ${MAX_PHOTO_MB} MB.`)
+    const problem = file && validatePhoto(file)
+    if (problem) {
+      setEboardError(problem)
       setPhotoInputKey((k) => k + 1)
       return
     }
@@ -152,39 +149,32 @@ export default function Admin() {
       setEboardError('Fill in the name, role, and fun fact.')
       return
     }
+    if (bio.length > MAX_BIO) {
+      setEboardError(`Keep the description under ${MAX_BIO} characters.`)
+      return
+    }
     setSaving(true)
 
-    // Upload the photo first under a random name, so a new photo never
-    // overwrites one that's still in use
-    let photoPath = editing?.photo_path ?? null
-    if (photo) {
-      const ext = photo.name.split('.').pop()?.toLowerCase() || 'jpg'
-      const path = `${crypto.randomUUID()}.${ext}`
-      const { error } = await supabase.storage.from(PHOTO_BUCKET).upload(path, photo, { contentType: photo.type })
-      if (error) {
-        setEboardError(`Couldn't upload the photo: ${error.message}`)
-        setSaving(false)
-        return
-      }
-      photoPath = path
-    }
-
-    const fields = { name, role, fact, bio: bio || null, photo_path: photoPath }
-    // .select() returns the saved rows, so a write blocked by row-level
-    // security (which changes nothing, with no error) can be caught
+    // Save the text first: replacePhoto() needs the member's id,
+    // which a new member only gets once it's inserted.
+    // .select() returns the saved row, so a write blocked by row-level
+    // security (which changes nothing, with no error) can be caught.
+    const fields = { name, role, fact, bio: bio || null }
     const { data, error } = editing
-      ? await supabase.from('eboard').update(fields).eq('id', editing.id).select()
-      : await supabase.from('eboard').insert(fields).select()
-
+      ? await supabase.from('eboard').update(fields).eq('id', editing.id).select('id')
+      : await supabase.from('eboard').insert(fields).select('id')
     if (error || !data?.length) {
       setEboardError(`Couldn't save the member: ${error?.message ?? "Supabase didn't allow it."}`)
-      // Don't leave an unused upload behind
-      if (photo && photoPath) await supabase.storage.from(PHOTO_BUCKET).remove([photoPath])
-    } else {
-      // Replaced photo: delete the old file
-      if (photo && editing?.photo_path) await supabase.storage.from(PHOTO_BUCKET).remove([editing.photo_path])
-      resetForm()
-      await loadEboard()
+      setSaving(false)
+      return
+    }
+
+    const savedName = name
+    const photoResult = photo ? await replacePhoto(data[0].id, editing?.photo_path ?? null, photo) : {}
+    resetForm()
+    await loadEboard()
+    if (photoResult.error) {
+      setEboardError(`Saved ${savedName}, but the photo didn't upload: ${photoResult.error} Click edit to try again.`)
     }
     setSaving(false)
   }
@@ -192,16 +182,13 @@ export default function Admin() {
   async function handleDelete(m: EboardMember) {
     if (!window.confirm(`Delete ${m.name} from the board?`)) return
     setEboardError('')
-    // .select() returns the deleted rows, so a delete blocked by row-level
-    // security (which deletes nothing, with no error) can be caught
-    const { data, error } = await supabase.from('eboard').delete().eq('id', m.id).select()
-    if (error) setEboardError(`Couldn't delete the member: ${error.message}`)
-    else if (!data?.length) setEboardError("Couldn't delete the member: Supabase didn't allow it.")
-    else {
-      if (m.photo_path) await supabase.storage.from(PHOTO_BUCKET).remove([m.photo_path])
-      if (editing?.id === m.id) resetForm()
-      await loadEboard()
+    const { error } = await deleteMember(m.id, m.photo_path)
+    if (error) {
+      setEboardError(`Couldn't delete the member: ${error}`)
+      return
     }
+    if (editing?.id === m.id) resetForm()
+    await loadEboard()
   }
 
   if (checking) {
@@ -286,9 +273,11 @@ export default function Admin() {
         <textarea
           placeholder="Description (optional): major, year, what they do on the board"
           value={bio}
+          maxLength={MAX_BIO}
           onChange={(e) => setBio(e.target.value)}
           rows={4}
         />
+        <span className="char-count">{bio.length}/{MAX_BIO}</span>
         <textarea placeholder="Fun fact" value={fact} onChange={(e) => setFact(e.target.value)} rows={3} />
         <label className="photo-pick">
           <span>
@@ -297,7 +286,7 @@ export default function Admin() {
           <input
             key={photoInputKey}
             type="file"
-            accept={PHOTO_TYPES.join(',')}
+            accept={PHOTO_ACCEPT}
             onChange={(e) => choosePhoto(e.target.files?.[0] ?? null)}
           />
         </label>
@@ -311,20 +300,21 @@ export default function Admin() {
       {eboardError && <p className="err">{eboardError}</p>}
 
       <div className="admin-list">
-        {eboard.map((m) => (
-          <div className="admin-row" key={m.id}>
-            <span className="admin-member">
-              {m.photo_path && (
-                <Image className="admin-thumb" src={photoUrl(m.photo_path)} alt="" width={36} height={36} />
-              )}
-              <span><strong>{m.name}</strong> — {m.role}</span>
-            </span>
-            <span>
-              <button className="del edit" onClick={() => startEditing(m)}>edit</button>
-              <button className="del" onClick={() => handleDelete(m)}>delete</button>
-            </span>
-          </div>
-        ))}
+        {eboard.map((m) => {
+          const url = photoUrl(m.photo_path)
+          return (
+            <div className="admin-row" key={m.id}>
+              <span className="admin-member">
+                {url && <Image className="admin-thumb" src={url} alt="" width={36} height={36} />}
+                <span><strong>{m.name}</strong> — {m.role}</span>
+              </span>
+              <span>
+                <button className="del edit" onClick={() => startEditing(m)}>edit</button>
+                <button className="del" onClick={() => handleDelete(m)}>delete</button>
+              </span>
+            </div>
+          )
+        })}
       </div>
 
       <Link href="/" className="back-link">← View the site</Link>

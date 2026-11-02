@@ -104,6 +104,7 @@ button { font: inherit; }
 .err { color: var(--coral); margin-top: 0.8rem; font-weight: 500; }
 .admin-list { margin-top: 2rem; }
 .admin-subhead { font-size: 1.1rem; margin-bottom: 0.8rem; }
+.char-count { align-self: flex-end; margin-top: -0.5rem; font-size: 0.8rem; opacity: 0.7; }
 .photo-pick { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.9rem; }
 .admin-member { display: flex; align-items: center; gap: 0.6rem; }
 .admin-thumb { border-radius: 50%; object-fit: cover; border: 2px solid var(--ink); }
