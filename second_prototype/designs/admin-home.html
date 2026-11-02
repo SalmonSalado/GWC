@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin A+C – Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Caveat:wght@600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0f7f7a}a:hover{color:#14213d}
+</style>
+</helmet>
+<div style="min-height: 900px; background: #f6f5f1; color: #14213d; font-family: 'Space Grotesk', sans-serif; display: flex; flex-wrap: wrap">
+
+  <nav aria-label="Admin sections" style="flex: 1 1 240px; max-width: 280px; background: #14213d; color: #f6f5f1; padding: 28px 20px; display: flex; flex-direction: column; gap: 28px; box-sizing: border-box">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="#fde1ea"></circle><g fill="none" stroke="#1aa5a0" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 22 L26 32 L14 42"></path><path d="M31 44 H48"></path></g></svg>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-weight: 700; font-size: 16px">GWC Admin</span>
+        <span style="font-family: 'Space Mono', monospace; font-size: 12px; color: #c9cdd8">Rutgers–Newark</span>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <a href="#" aria-current="page" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; background: #f08bab; color: #14213d; text-decoration: none; font-size: 15px; font-weight: 700">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"></path><path d="M10 20v-5h4v5"></path></svg>Home</a>
+      <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; color: #f6f5f1; text-decoration: none; font-size: 15px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"></path><circle cx="17.5" cy="9" r="2.5"></circle><path d="M17 14.5c2.3.2 4 1.8 4.5 4.5"></path></svg>E-board</a>
+      <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; color: #f6f5f1; text-decoration: none; font-size: 15px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 8h8M8 12h8M8 16h5"></path></svg>Posts</a>
+      <a href="Main.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; color: #f6f5f1; text-decoration: none; font-size: 15px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>Resources</a>
+      <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; color: #f6f5f1; text-decoration: none; font-size: 15px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-8 8"></path></svg>Photos</a>
+      <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; color: #f6f5f1; text-decoration: none; font-size: 15px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"></path></svg>Admins</a>
+    </div>
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #34405e; padding-top: 18px">
+      <span style="font-size: 13px; color: #c9cdd8">Signed in as</span>
+      <span style="font-size: 14px; font-weight: 500">[your email]</span>
+      <button type="button" style="align-self: flex-start; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 2px solid #f6f5f1; background: transparent; color: #f6f5f1; font: inherit; font-size: 14px; cursor: pointer">Sign out</button>
+    </div>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; padding: 40px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px">
+    <header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <h1 style="margin: 0; font-size: 36px; font-weight: 700">Hi, [first name]</h1>
+        <p style="margin: 0; font-size: 16px; color: #4a5470">What do you want to update today?</p>
+      </div>
+      <a href="#" style="min-height: 48px; display: inline-flex; align-items: center; padding: 0 22px; border-radius: 999px; border: 2px solid #14213d; color: #14213d; text-decoration: none; font-weight: 500">View site ↗</a>
+    </header>
+
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px">
+      <sc-for list="{{tiles}}" as="t" hint-placeholder-count="4">
+        <article style="background: #ffffff; border: 2px solid #14213d; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 5px 5px 0 #14213d">
+          <div style="width: 48px; height: 48px; border-radius: 12px; background: {{t.tint}}; border: 2px solid #14213d; display: flex; align-items: center; justify-content: center">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#14213d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg>
+          </div>
+          <h2 style="margin: 0; font-size: 20px">{{t.name}}</h2>
+          <span style="font-size: 14px; color: #4a5470">{{t.count}}</span>
+          <div style="display: flex; gap: 8px; margin-top: auto">
+            <button type="button" style="flex: 1; min-height: 44px; border-radius: 999px; border: 2px solid #14213d; background: #14213d; color: #ffffff; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer">+ Add</button>
+            <a href="{{t.href}}" style="flex: 1; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; border: 2px solid #14213d; color: #14213d; text-decoration: none; font-size: 14px">Manage</a>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+      <section aria-label="Recent changes" style="flex: 999 1 440px; min-width: 0; background: #ffffff; border: 2px solid #14213d; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 4px">
+        <h2 style="margin: 0 0 10px; font-size: 20px">Recent changes</h2>
+        <sc-for list="{{log}}" as="l" hint-placeholder-count="4">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #e3e1da">
+            <span style="width: 36px; height: 36px; border-radius: 50%; background: #0f7f7a; color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">{{l.who}}</span>
+            <span style="flex: 1; font-size: 15px">{{l.what}}</span>
+            <span style="font-size: 13px; color: #5c6680">{{l.when}}</span>
+          </div>
+        </sc-for>
+      </section>
+
+      <aside style="flex: 1 1 240px; max-width: 300px; background: #f7a8bf; border-radius: 4px; padding: 30px 22px 22px; transform: rotate(1.5deg); box-shadow: 0 6px 14px rgba(20,33,61,.18); display: flex; flex-direction: column; gap: 8px; position: relative">
+        <span aria-hidden="true" style="position: absolute; top: -10px; left: 50%; width: 84px; height: 22px; margin-left: -42px; background: #f5ecd2"></span>
+        <span style="font-family: 'Caveat', cursive; font-size: 30px; line-height: 1">Board turnover?</span>
+        <p style="margin: 0; font-size: 15px; line-height: 1.5">New board members need a login <strong>and</strong> a spot on the admin list before they can edit. Ask the secretary.</p>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      tiles: [
+        { name: 'E-board', count: '[#] members', tint: '#fde4ec', href: '#', icon: 'M9 11.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5M17.5 11.5a2.5 2.5 0 1 0 0-5M17 14.5c2.3.2 4 1.8 4.5 4.5' },
+        { name: 'Posts', count: '[#] posts', tint: '#d4f0ee', href: '#', icon: 'M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 8h8M8 12h8M8 16h5' },
+        { name: 'Resources', count: '[#] links', tint: '#fde4ec', href: 'Main.dc.html', icon: 'M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' },
+        { name: 'Photos', count: '[#] photos', tint: '#d4f0ee', href: '#', icon: 'M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zM21 16l-5-5-8 8M9 8a2 2 0 1 0 0 4 2 2 0 0 0 0-4z' }
+      ],
+      log: [
+        { who: 'S', what: 'Added resource “Resume template”', when: '[time ago]' },
+        { who: 'P', what: 'Posted “Hackathon info session”', when: '[time ago]' },
+        { who: 'T', what: 'Uploaded 6 photos to Camera Roll', when: '[time ago]' },
+        { who: 'S', what: 'Updated the Treasurer’s fun fact', when: '[time ago]' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

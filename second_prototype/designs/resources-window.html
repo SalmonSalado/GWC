@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Resources – Pinboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&amp;family=Pixelify+Sans:wght@500&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#14213d}a:hover{color:#0f7f7a}
+.desk{background:#5b8fc7 url(/_blob/43742d5bab07e18e40cdea5a1d47a060) center/cover no-repeat}
+</style>
+</helmet>
+<div class="desk" style="min-height: 900px; color: #1b1b1b; font-family: 'Space Mono', monospace; padding: 48px 32px; box-sizing: border-box; display: flex; justify-content: center; align-items: flex-start">
+  <section aria-label="resources window" style="width: 100%; max-width: 1060px; background: #efefef; border: 2px solid #1b1b1b; border-radius: 4px; box-shadow: 6px 6px 0 #2b2b2b; display: flex; flex-direction: column">
+    <div style="background: linear-gradient(#f7f7f7, #d9d9d9); padding: 10px 14px; display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #1b1b1b">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#f7a8bf" stroke="#1b1b1b" stroke-width="1.6"></path></svg>
+      <span style="font-size: 18px; font-weight: 700; color: #14213d; flex: 1">resources</span>
+      <button type="button" aria-label="Minimize" style="width: 26px; height: 26px; background: #e8c14a; border: 2px solid #1b1b1b; border-radius: 50%; cursor: pointer"></button>
+      <button type="button" aria-label="Close" style="width: 26px; height: 26px; background: #e2683f; border: 2px solid #1b1b1b; border-radius: 50%; cursor: pointer"></button>
+    </div>
+
+    <div style="padding: 26px 30px 30px; display: flex; flex-direction: column; gap: 20px">
+      <p style="margin: 0; font-size: 15px; line-height: 1.6">6 notes, pinned by the e-board. Open one to go to the link.</p>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+        <div role="group" aria-label="Filter by category" style="display: flex; flex-wrap: wrap; gap: 8px; flex: 1 1 480px">
+          <sc-for list="{{chips}}" as="c" hint-placeholder-count="6">
+            <button type="button" aria-pressed="{{c.pressed}}" style="min-height: 44px; padding: 0 14px; border-radius: 4px; border: 1.5px solid {{c.ring}}; background: {{c.bg}}; color: {{c.fg}}; font: inherit; font-size: 13px; cursor: pointer">{{c.name}}</button>
+          </sc-for>
+        </div>
+        <label style="flex: 0 1 240px; display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; background: #fdfdfc; border: 1.5px solid #b5b5b5; border-radius: 4px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555555" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+          <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0)">Search resources</span>
+          <input type="search" placeholder="search…" style="flex: 1; min-width: 0; border: none; outline: none; background: transparent; font: inherit; font-size: 13px"></label>
+      </div>
+
+      <div style="background-color: #fdfdfc; background-image: radial-gradient(#dcdcdc 1.2px, transparent 1.2px); background-size: 22px 22px; border: 1.5px solid #b5b5b5; padding: 36px 30px 30px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 38px 30px">
+        <sc-for list="{{notes}}" as="n" hint-placeholder-count="6">
+          <article style="position: relative; background: {{n.paper}}; padding: 34px 22px 20px; box-shadow: 0 8px 16px rgba(27,27,27,.25); transform: rotate({{n.tilt}}); display: flex; flex-direction: column; gap: 10px; min-height: 210px; box-sizing: border-box">
+            <span aria-hidden="true" style="position: absolute; top: -12px; left: 50%; width: 92px; height: 26px; margin-left: -46px; background: #f5ecd2; opacity: .92"></span>
+            <span style="align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: #ffffff; border: 1.5px solid #1b1b1b; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em">{{n.cat}}</span>
+            <h3 style="margin: 0; font-family: 'Caveat', cursive; font-size: 32px; line-height: 1; font-weight: 600">{{n.title}}</h3>
+            <p style="margin: 0; font-size: 13px; line-height: 1.5">{{n.desc}}</p>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto">
+              <span style="font-family: 'Caveat', cursive; font-size: 22px">— {{n.by}}</span>
+              <a href="#" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 14px; border: 2px solid #1b1b1b; border-radius: 999px; background: #ffffff; text-decoration: none; font-size: 13px; font-weight: 700">Open ↗</a>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const chip = (name, on) => ({ name, pressed: on ? 'true' : 'false', bg: on ? '#14213d' : '#fdfdfc', fg: on ? '#ffffff' : '#1b1b1b', ring: on ? '#14213d' : '#b5b5b5' });
+    return {
+      chips: [chip('All', true), chip('Career'), chip('Learning'), chip('Hackathons'), chip('Scholarships'), chip('Tools')],
+      notes: [
+        { title: 'Resume template', cat: 'Career', desc: 'The one-page layout the board uses for internship apps.', by: 'Secretary', paper: '#f7a8bf', tilt: '-2deg' },
+        { title: 'Intro to Git', cat: 'Learning', desc: 'Start here before the next workshop. Covers commits, branches and pull requests.', by: 'President', paper: '#9fdcd7', tilt: '1.5deg' },
+        { title: 'Hackathon starter kit', cat: 'Hackathons', desc: 'Team roles, idea checklist and what to bring on the day.', by: 'Event manager', paper: '#f9d77e', tilt: '-1deg' },
+        { title: 'Internship tracker', cat: 'Career', desc: 'Sheet to log applications and follow-up dates.', by: 'Treasurer', paper: '#9fdcd7', tilt: '2deg' },
+        { title: '[Scholarship list]', cat: 'Scholarships', desc: '[Short description from the e-board]', by: 'Secretary', paper: '#f9d77e', tilt: '-1.5deg' },
+        { title: '[Tool name]', cat: 'Tools', desc: '[Short description from the e-board]', by: 'Advisor', paper: '#f7a8bf', tilt: '1deg' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
