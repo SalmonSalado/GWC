@@ -7,7 +7,8 @@ import {
   ArrowLeftIcon, CameraIcon, FolderIcon, JoinIcon, PersonIcon, TextFileIcon,
 } from '../os/icons'
 import { FOLDER_NAMES, type FolderId, type Route } from '../os/routes'
-import { useEboard, type EboardMember } from '@/lib/eboard'
+import Image from 'next/image'
+import { photoUrl, useEboard, type EboardMember } from '@/lib/eboard'
 
 type Item = {
   key: string
@@ -79,7 +80,9 @@ function FolderView({ folder, tapToOpen, onNavigate, onOpen }: Props) {
       ? eboard.members.map((m, i) => ({
           key: m.id,
           label: m.name,
-          icon: (s) => <PersonIcon size={s} variant={i} />,
+          icon: (s) => m.photo_path
+            ? <Image className={styles.photo} src={photoUrl(m.photo_path)} alt="" width={s} height={s} />
+            : <PersonIcon size={s} variant={i} />,
           description: m.role,
           member: m,
         }))
@@ -115,11 +118,12 @@ function FolderView({ folder, tapToOpen, onNavigate, onOpen }: Props) {
         <aside className={styles.side} aria-live="polite">
           {current ? (
             <>
-              <span className={styles.sideArt}>{current.icon(72)}</span>
+              <span className={styles.sideArt}>{current.icon(current.member?.photo_path ? 120 : 72)}</span>
               {current.member ? (
                 <>
                   <p className={styles.sideName}>{current.member.name}</p>
                   <p className={styles.sideRole}>{current.member.role}</p>
+                  {current.member.bio && <p className={styles.sideText}>{current.member.bio}</p>}
                   {current.member.fact && <p className={styles.sideText}>{current.member.fact}</p>}
                 </>
               ) : (

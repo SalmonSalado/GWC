@@ -32,6 +32,10 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Board photos come from the Supabase storage bucket
+  images: {
+    remotePatterns: supabaseUrl ? [new URL(`${supabaseUrl}/storage/v1/object/public/**`)] : [],
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

@@ -50,6 +50,7 @@
   overflow-y: auto;
 }
 .sideArt { display: flex; margin-bottom: 8px; }
+.photo { object-fit: cover; border: 2px solid var(--os-ink); border-radius: 4px; background: #fff; }
 .sideName { font: 500 18px/1.2 var(--os-pixel); }
 .sideRole { font: 700 12px/1.3 var(--os-mono); color: var(--teal-deep); }
 .sideText { font: 13px/1.45 var(--os-mono); max-width: 22ch; }

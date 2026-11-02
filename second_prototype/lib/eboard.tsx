@@ -8,7 +8,16 @@ export type EboardMember = {
   name: string
   role: string
   fact: string
+  bio: string | null
+  // file name inside the eboard-photos storage bucket
+  photo_path: string | null
   created_at: string
+}
+
+export const PHOTO_BUCKET = 'eboard-photos'
+
+export function photoUrl(path: string): string {
+  return supabase.storage.from(PHOTO_BUCKET).getPublicUrl(path).data.publicUrl
 }
 
 type EboardState = {

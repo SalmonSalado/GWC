@@ -103,6 +103,10 @@ button { font: inherit; }
 }
 .err { color: var(--coral); margin-top: 0.8rem; font-weight: 500; }
 .admin-list { margin-top: 2rem; }
+.admin-subhead { font-size: 1.1rem; margin-bottom: 0.8rem; }
+.photo-pick { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.9rem; }
+.admin-member { display: flex; align-items: center; gap: 0.6rem; }
+.admin-thumb { border-radius: 50%; object-fit: cover; border: 2px solid var(--ink); }
 .admin-row {
   display: flex;
   justify-content: space-between;
@@ -118,6 +122,7 @@ button { font: inherit; }
   font-family: var(--display);
   cursor: pointer;
 }
+.admin-row .edit { color: var(--ink); margin-right: 0.6rem; }
 .back-link {
   display: inline-block;
   margin-top: 2rem;
