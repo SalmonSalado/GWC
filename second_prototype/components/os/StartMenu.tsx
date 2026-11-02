@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Link from 'next/link'
 import styles from './Taskbar.module.css'
 import {
   CameraIcon, FolderIcon, JoinIcon, LockIcon, PersonIcon, TextFileIcon,
@@ -63,10 +62,6 @@ export default function StartMenu({ onOpen, onLock, onClose }: Props) {
           </button>
         ))}
         <hr className={styles.startDivider} />
-        <Link role="menuitem" className={styles.startItem} href="/admin">
-          <PersonIcon size={22} variant={2} />
-          Board login
-        </Link>
         <button type="button" role="menuitem" className={styles.startItem} onClick={onLock}>
           <span className={styles.lockSwatch}><LockIcon size={18} /></span>
           Lock screen

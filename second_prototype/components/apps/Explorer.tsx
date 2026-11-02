@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import styles from './Explorer.module.css'
 import IconButton from '../os/IconButton'
 import {
@@ -154,7 +153,7 @@ function FolderView({ folder, tapToOpen, onNavigate, onOpen }: Props) {
           )}
           {folder === 'people' && eboard.status === 'ready' && items.length === 0 && (
             <p className={styles.message}>
-              No board members yet. Add them from the <Link href="/admin">admin panel</Link>.
+              Board members coming soon.
             </p>
           )}
           {items.map((item) => (
