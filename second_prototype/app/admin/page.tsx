@@ -31,6 +31,7 @@ export default function Admin() {
   const [role, setRole] = useState('')
   const [fact, setFact] = useState('')
   const [saving, setSaving] = useState(false)
+  const [eboardError, setEboardError] = useState('')
 
   // Check session on mount
   useEffect(() => {
@@ -52,7 +53,7 @@ export default function Admin() {
       .from('eboard')
       .select('*')
       .order('created_at', { ascending: true })
-    if (error) console.error(error)
+    if (error) setEboardError(`Couldn't load the board: ${error.message}`)
     else setEboard((data ?? []) as EboardMember[])
   }
 
@@ -99,11 +100,15 @@ export default function Admin() {
   }
 
   async function handleAdd() {
-    if (!name || !role || !fact) return
+    setEboardError('')
+    if (!name || !role || !fact) {
+      setEboardError('Fill in the name, role, and fun fact.')
+      return
+    }
     setSaving(true)
     const { error } = await supabase.from('eboard').insert({ name, role, fact })
     if (error) {
-      console.error(error)
+      setEboardError(`Couldn't add the member: ${error.message}`)
     } else {
       setName('')
       setRole('')
@@ -114,8 +119,12 @@ export default function Admin() {
   }
 
   async function handleDelete(id: string) {
-    const { error } = await supabase.from('eboard').delete().eq('id', id)
-    if (error) console.error(error)
+    setEboardError('')
+    // .select() returns the deleted rows, so a delete blocked by Supabase's
+    // row-level security (which deletes nothing, with no error) can be caught
+    const { data, error } = await supabase.from('eboard').delete().eq('id', id).select()
+    if (error) setEboardError(`Couldn't delete the member: ${error.message}`)
+    else if (!data?.length) setEboardError("Couldn't delete the member: Supabase didn't allow it.")
     else await loadEboard()
   }
 
@@ -202,6 +211,7 @@ export default function Admin() {
           {saving ? 'Adding…' : 'Add member'}
         </button>
       </div>
+      {eboardError && <p className="err">{eboardError}</p>}
 
       <div className="admin-list">
         {eboard.map((m) => (
