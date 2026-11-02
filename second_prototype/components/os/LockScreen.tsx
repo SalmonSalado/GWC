@@ -21,9 +21,9 @@ export default function LockScreen({ onEnter, leaving }: { onEnter: () => void; 
   return (
     <div className={styles.lock} data-leaving={leaving || undefined}>
       <span className={styles.lockIcon}><LockIcon size={32} /></span>
-      <button type="button" className={styles.login} onClick={onEnter} aria-label="Log in to the site" autoFocus>
+      <button type="button" className={styles.login} onClick={onEnter} aria-label="Enter the site" autoFocus>
         <Image className={styles.avatar} src={logo} alt="" priority />
-        <span className={styles.loginLabel}>Log in</span>
+        <span className={styles.loginLabel}>Enter</span>
       </button>
       <p className={styles.lockTime}>{time}<small>{ampm}</small></p>
       <p className={styles.lockDate}>{date} <span>{weekday}</span></p>
